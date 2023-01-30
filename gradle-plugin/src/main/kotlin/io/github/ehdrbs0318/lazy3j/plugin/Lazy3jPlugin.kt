@@ -1,49 +1,66 @@
 package io.github.ehdrbs0318.lazy3j.plugin
 
+import io.github.ehdrbs0318.lazy3j.plugin.task.GenerateJavaFromJsonTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.web3j.codegen.TruffleJsonFunctionWrapperGenerator
-import java.io.File
-import java.nio.file.Paths
+import org.gradle.api.UnknownTaskException
+import org.gradle.api.plugins.JavaPluginExtension
+import org.gradle.api.tasks.TaskProvider
 
 class Lazy3jPlugin : Plugin<Project> {
     @Suppress()
     override fun apply(project: Project) {
-        val extension = project.extensions.create("lazy3j", Lazy3jPluginExtension::class.java)
-        val projectDirStr = project.projectDir.absolutePath
+        createExtension(project)
+        registerGenerateJavaFromJsonTask(project)
+        project.afterEvaluate {
+            linkToCompileTask(project)
+            addGeneratedClassesToSourceSets(project)
+        }
+    }
 
-        // json directory path
-        extension.jsonDir.convention("$projectDirStr/abi")
+    private fun createExtension(project: Project) {
+        project.extensions.create("lazy3j", Lazy3jPluginExtension::class.java).apply {
+            val projectDirStr = project.projectDir.absolutePath
 
-        // generated java file path
-        extension.generatedDir.convention("${project.buildDir.absolutePath}/generated/contracts")
+            // json directory path
+            this.jsonDir.convention("$projectDirStr/abi")
 
-        // package names
-        extension.packageName.convention("io.github.ehdrbs0318.lazy3j.contracts")
+            // generated java file path
+            this.generatedDir.convention("${project.buildDir.absolutePath}/generated/contracts")
 
-        project.task("generateJavaFromJson").apply {
-            group = "lazy3j"
-            doLast {
-                val jsonDir = File(extension.jsonDir.get())
-                val jsonFiles = jsonDir
-                        .list { _, name -> name.endsWith(".json", true) }
-                        ?.toList()
-                        ?.map { Paths.get(extension.jsonDir.get(), it).toString() }
-                        ?: emptyList()
-                println("files = $jsonFiles")
-                for (jsonFile in jsonFiles) {
-                    try {
-                        TruffleJsonFunctionWrapperGenerator(
-                                jsonFile,
-                                extension.generatedDir.get(),
-                                extension.packageName.get(),
-                                true
-                        ).generate()
-                    } catch (e: Exception) {
-                        println(e.message)
-                    }
-                }
+            // package names
+            this.packageName.convention("io.github.ehdrbs0318.lazy3j.contracts")
+
+            // run generate on compileTask
+            this.generateJavaWhenCompile.convention(false)
+        }
+    }
+
+    private fun registerGenerateJavaFromJsonTask(project: Project): TaskProvider<GenerateJavaFromJsonTask> {
+        return project.tasks.register(GenerateJavaFromJsonTask.NAME, GenerateJavaFromJsonTask::class.java)
+    }
+
+    // 컴파일 task 전에 generateJavaFromJsonTask 실행
+    private fun linkToCompileTask(project: Project) {
+        val autoGenerate = project.extensions
+                .getByType(Lazy3jPluginExtension::class.java)
+                .generateJavaWhenCompile.get()
+        if (autoGenerate) {
+            val task = try {
+                project.tasks.getByName("compileKotlin")
+            } catch (e: UnknownTaskException) {
+                project.tasks.getByName("compileJava")
             }
+            task.dependsOn(GenerateJavaFromJsonTask.NAME)
+        }
+    }
+
+    /**
+     * 생성된 코드를 소스 세트에 포함
+     */
+    private fun addGeneratedClassesToSourceSets(project: Project) {
+        project.extensions.getByType(JavaPluginExtension::class.java).sourceSets.named("main") {
+            it.java.srcDir("${project.buildDir}/generated/contracts")
         }
     }
 }
