@@ -1,4 +1,4 @@
-package com.github.ehdrbs0318.lazy3j.plugin
+package io.github.ehdrbs0318.lazy3j.plugin
 
 import org.gradle.api.internal.provider.DefaultProperty
 import org.gradle.api.internal.provider.PropertyHost

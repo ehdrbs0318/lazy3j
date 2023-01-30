@@ -1,4 +1,4 @@
-package com.github.ehdrbs0318.lazy3j.plugin
+package io.github.ehdrbs0318.lazy3j.plugin
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -19,7 +19,7 @@ class Lazy3jPlugin : Plugin<Project> {
         extension.generatedDir.convention("${project.buildDir.absolutePath}/generated/contracts")
 
         // package names
-        extension.packageName.convention("com.github.ehdrbs0318.lazy3j.contracts")
+        extension.packageName.convention("io.github.ehdrbs0318.lazy3j.contracts")
 
         project.task("generateJavaFromJson").apply {
             group = "web3j"

@@ -11,9 +11,17 @@ dependencies {
 
 gradlePlugin {
     plugins {
-        create("com.github.ehdrbs0318.lazy3j") {
-            id = "com.github.ehdrbs0318.lazy3j"
-            implementationClass = "com.github.ehdrbs0318.lazy3j.plugin.Lazy3jPlugin"
+        create("lazy3jPlugin") {
+            id = "io.github.ehdrbs0318.lazy3j"
+            displayName = "lazy3jPlugin"
+            description = "create java file from smart contract abi(json) file."
+            implementationClass = "io.github.ehdrbs0318.lazy3j.plugin.Lazy3jPlugin"
         }
     }
+}
+
+pluginBundle {
+    website = "https://github.com/ehdrbs0318/lazy3j"
+    vcsUrl = "https://github.com/ehdrbs0318/lazy3j"
+    tags = listOf("smartContract", "generate", "web3j")
 }
