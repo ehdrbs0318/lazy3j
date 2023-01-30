@@ -16,7 +16,7 @@ gradlePlugin {
             displayName = "lazy3jPlugin"
             description = "create java file from smart contract abi(json) file."
             implementationClass = "io.github.ehdrbs0318.lazy3j.plugin.Lazy3jPlugin"
-            uri("$buildDir/repo")
+//            uri("$buildDir/repo") //local check
         }
     }
 }
