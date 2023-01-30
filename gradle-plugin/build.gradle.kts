@@ -23,5 +23,5 @@ gradlePlugin {
 pluginBundle {
     website = "https://github.com/ehdrbs0318/lazy3j"
     vcsUrl = "https://github.com/ehdrbs0318/lazy3j"
-    tags = listOf("smartContract", "generate", "web3j")
+    tags = listOf("smartContract", "generate", "web3j", "lazy3j")
 }

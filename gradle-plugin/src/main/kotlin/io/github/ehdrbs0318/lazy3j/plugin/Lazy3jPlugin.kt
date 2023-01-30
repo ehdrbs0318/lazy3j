@@ -22,7 +22,7 @@ class Lazy3jPlugin : Plugin<Project> {
         extension.packageName.convention("io.github.ehdrbs0318.lazy3j.contracts")
 
         project.task("generateJavaFromJson").apply {
-            group = "web3j"
+            group = "lazy3j"
             doLast {
                 val jsonDir = File(extension.jsonDir.get())
                 val jsonFiles = jsonDir
