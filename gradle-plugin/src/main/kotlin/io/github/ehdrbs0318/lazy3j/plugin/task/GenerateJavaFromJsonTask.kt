@@ -15,6 +15,7 @@ open class GenerateJavaFromJsonTask : DefaultTask() {
         const val NAME = "generateJavaFromJson"
     }
 
+
     @TaskAction
     fun generate() {
         val extension = project.extensions.getByType(Lazy3jPluginExtension::class.java)

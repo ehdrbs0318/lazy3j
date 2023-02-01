@@ -5,8 +5,8 @@ import org.gradle.api.internal.provider.PropertyHost
 import org.gradle.api.provider.Property
 
 open class Lazy3jPluginExtension {
-    val jsonDir: Property<String> = DefaultProperty(PropertyHost.NO_OP, String::class.java)
-    val generatedDir: Property<String> = DefaultProperty(PropertyHost.NO_OP, String::class.java)
-    val packageName: Property<String> = DefaultProperty(PropertyHost.NO_OP, String::class.java)
-    val generateJavaWhenCompile: Property<Boolean> = DefaultProperty(PropertyHost.NO_OP, Boolean::class.java)
+    var jsonDir: Property<String> = DefaultProperty(PropertyHost.NO_OP, String::class.java)
+    var generatedDir: Property<String> = DefaultProperty(PropertyHost.NO_OP, String::class.java)
+    var packageName: Property<String> = DefaultProperty(PropertyHost.NO_OP, String::class.java)
+    var generateJavaWhenCompile: Boolean = false
 }

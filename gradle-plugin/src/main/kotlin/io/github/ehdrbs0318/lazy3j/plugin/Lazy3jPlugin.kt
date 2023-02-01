@@ -32,7 +32,7 @@ class Lazy3jPlugin : Plugin<Project> {
             this.packageName.convention("io.github.ehdrbs0318.lazy3j.contracts")
 
             // run generate on compileTask
-            this.generateJavaWhenCompile.convention(false)
+            this.generateJavaWhenCompile
         }
     }
 
@@ -44,7 +44,7 @@ class Lazy3jPlugin : Plugin<Project> {
     private fun linkToCompileTask(project: Project) {
         val autoGenerate = project.extensions
                 .getByType(Lazy3jPluginExtension::class.java)
-                .generateJavaWhenCompile.get()
+                .generateJavaWhenCompile
         if (autoGenerate) {
             val task = try {
                 project.tasks.getByName("compileKotlin")
@@ -60,7 +60,9 @@ class Lazy3jPlugin : Plugin<Project> {
      */
     private fun addGeneratedClassesToSourceSets(project: Project) {
         project.extensions.getByType(JavaPluginExtension::class.java).sourceSets.named("main") {
-            it.java.srcDir("${project.buildDir}/generated/contracts")
+            val extension = project.extensions.getByType(Lazy3jPluginExtension::class.java)
+            val genDir = extension.generatedDir
+            it.java.srcDir(genDir)
         }
     }
 }
