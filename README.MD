@@ -43,7 +43,7 @@ lazy3j {
 
 | name                    | description                                                                                                               | type    | default value                                |
 |-------------------------|---------------------------------------------------------------------------------------------------------------------------|---------|----------------------------------------------|
-| jsonDir                 | abi file directory                                                                                                        | String  | ${projectDir.absolutePath}                   |
+| jsonDir                 | abi file directory                                                                                                        | String  | ${projectDir.absolutePath}/abi                   |
 | generatedDir            | generated java file directory                                                                                             | String  | ${buildDir.absolutePath}/generated/contracts |
 | packageName             | java files package name                                                                                                   | String  | io.github.ehdrbs0318.lazy3j.contracts        |
 | generateJavaWhenCompile | execute `generateJavaFromJson` task before `compileKotlin` task if task exists, or execute task before `compileJava` task | Boolean | false                                        |
